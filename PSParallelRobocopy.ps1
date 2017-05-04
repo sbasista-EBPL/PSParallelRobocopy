@@ -1,7 +1,7 @@
-﻿$ComputerGrp1 = 'somerandomcomputer','somerandomcomputer2'
-$ComputerGrp2 = 'someotherrandomcomputer', 'someotherrandomcomputer2'
-$ComputerGrp3 = 'otherrandomcomputer', 'otherrandomcomputer2'
-$ComputerGrp4 = 'randomcomputer', 'randomcomputer2'
+﻿$ComputerGrp1 = (Get-ADComputer -Filter * -SearchBase "OU=Project Managers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
+$ComputerGrp2 = (Get-ADComputer -Filter * -SearchBase "OU=HR,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
+$ComputerGrp3 = (Get-ADComputer -Filter * -SearchBase "OU=dolphinswithlasers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
+$ComputerGrp4 = (Get-ADComputer -Filter * -SearchBase "OU=sharkswithlasersontheirheads,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
 
 
 

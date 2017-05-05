@@ -1,19 +1,22 @@
-﻿#Define RoboCopy Variables
-$RoboCopySrc  = "local source directory"
-$RoboCopyDest = "destination directory"
+﻿
 
 
 #Define variables by computers in specific OUs
-$ComputerGrp1 = (Get-ADComputer -Filter * -SearchBase "OU=Project Managers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
-$ComputerGrp2 = (Get-ADComputer -Filter * -SearchBase "OU=HR,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
-$ComputerGrp3 = (Get-ADComputer -Filter * -SearchBase "OU=dolphinswithlasers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
-$ComputerGrp4 = (Get-ADComputer -Filter * -SearchBase "OU=sharkswithlasersontheirheads,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
+$ComputerGrp1 = Get-ADComputer -Filter * -SearchBase "OU=Project Managers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
+$ComputerGrp2 = Get-ADComputer -Filter * -SearchBase "OU=HR,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
+$ComputerGrp3 = Get-ADComputer -Filter * -SearchBase "OU=dolphinswithlasers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
+$ComputerGrp4 = Get-ADComputer -Filter * -SearchBase "OU=sharkswithlasersontheirheads,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
 
 
+#Define workflow LoLrobocopyworkflow
 workflow LoLrobocopyworkflow {
     param([string[]]$ComputerGrp1,[string[]]$ComputerGrp2,[string[]]$ComputerGrp3,[string[]]$ComputerGrp4)
 
     $CurrentDate = Get-Date -Format "yyyy-MM-dd"
+
+    #Define RoboCopy Variables
+    $RoboCopySrc  = "local source directory"
+    $RoboCopyDest = "destination directory"
 
     foreach -parallel ($server in $ComputerGrp1) {
 

@@ -18,7 +18,7 @@ workflow LoLrobocopyworkflow {
 
     foreach -parallel ($computer in $ComputerGrps) {
 
-        robocopy "$RoboCopySrc" "\\$computer\c$\Riot Games" /e /copyall /MIR /SECFIX /NP /R:1 /W:3 /MT:32 /LOG+:"$RoboCopyLog\$computer($CurrentDate).txt"
+        robocopy "$RoboCopySrc" "\\$computer\c$\Riot Games" /MIR /SECFIX  /copyall /NP /R:1 /W:3 /MT:16 /LOG+:"$RoboCopyLog\$computer($CurrentDate).txt"
 
         }
 

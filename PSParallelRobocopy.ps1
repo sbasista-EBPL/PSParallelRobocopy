@@ -1,9 +1,5 @@
-﻿#Define variables by computers in specific OUs
-#$ComputerGrp1 = Get-ADComputer -Filter * -SearchBase "OU=Project Managers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
-#$ComputerGrp2 = Get-ADComputer -Filter * -SearchBase "OU=HR,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
-#$ComputerGrp3 = Get-ADComputer -Filter * -SearchBase "OU=dolphinswithlasers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
-#$ComputerGrp4 = Get-ADComputer -Filter * -SearchBase "OU=sharkswithlasersontheirheads,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
-$ComputerGrps = Get-ADGroupMember -Identity "CN=Some Random Computer Group,OU=Groups,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
+﻿#Pull "Some Random Computer Group" group members 
+$ComputerGrps = Get-ADGroupMember -Identity "CN=Some Random Computer Group,OU=Groups,DC=drevilorg,DC=com" | Where-Object{$_.name -notlike "dolphinswithlasers*"}  | Select-Object -ExpandProperty "Name"
 
 
 #Define workflow LoLrobocopyworkflow

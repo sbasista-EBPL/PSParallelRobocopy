@@ -1,38 +1,26 @@
-﻿$ComputerGrp1 = (Get-ADComputer -Filter * -SearchBase "OU=Project Managers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
-$ComputerGrp2 = (Get-ADComputer -Filter * -SearchBase "OU=HR,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
-$ComputerGrp3 = (Get-ADComputer -Filter * -SearchBase "OU=dolphinswithlasers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
-$ComputerGrp4 = (Get-ADComputer -Filter * -SearchBase "OU=sharkswithlasersontheirheads,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name" | Out-String).trim()
+﻿#Define variables by computers in specific OUs
+#$ComputerGrp1 = Get-ADComputer -Filter * -SearchBase "OU=Project Managers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
+#$ComputerGrp2 = Get-ADComputer -Filter * -SearchBase "OU=HR,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
+#$ComputerGrp3 = Get-ADComputer -Filter * -SearchBase "OU=dolphinswithlasers,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
+#$ComputerGrp4 = Get-ADComputer -Filter * -SearchBase "OU=sharkswithlasersontheirheads,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
+$ComputerGrps = Get-ADGroupMember -Identity "CN=Some Random Computer Group,OU=Groups,DC=drevilorg,DC=com" | Select-Object -ExpandProperty "Name"
 
 
-
-workflow testrobocopy {
-    param([string[]]$ComputerGrp1,[string[]]$ComputerGrp2,[string[]]$ComputerGrp3,[string[]]$ComputerGrp4)
+#Define workflow LoLrobocopyworkflow
+workflow LoLrobocopyworkflow {
+    param([string[]]$ComputerGrps)
 
     $CurrentDate = Get-Date -Format "yyyy-MM-dd"
 
-    foreach -parallel ($server in $ComputerGrp1) {
+    #Define RoboCopy Variables
+    $RoboCopySrc  = "local source directory"
+    $RoboCopyDest = "destination directory"
 
-        robocopy "local source" "\\$server\c$\destination directory" /e /copyall /MIR /SEC /SECFIX /NP /TEE /R:4 /W:30 /MT:32 /LOG+:"C:\Logs\$server($CurrentDate).txt"
+    foreach -parallel ($computer in $ComputerGrps) {
 
-        }
-
-    foreach -parallel ($server in $ComputerGrp2) {
-
-        robocopy "local source" "\\$server\c$\destination directory" /e /copyall /MIR /SEC /SECFIX /NP /TEE /R:4 /W:30 /MT:32 /LOG+:"C:\Logs\$server($CurrentDate).txt"
+        robocopy "$RoboCopySrc" "\\$computer\c$\Riot Games" /e /copyall /MIR /SECFIX /NP /R:1 /W:3 /MT:32 /LOG+:"$RoboCopyLog\$computer($CurrentDate).txt"
 
         }
 
-    foreach -parallel ($server in $ComputerGrp3) {
-
-        robocopy "local source" "\\$server\c$\destination directory" /e /copyall /MIR /SEC /SECFIX /NP /TEE /R:4 /W:30 /MT:32 /LOG+:"C:\Logs\$server($CurrentDate).txt"
-
-
-        }
-
-    foreach -parallel ($server in $ComputerGrp4) {
-
-        robocopy "local source" "\\$server\c$\destination directory" /e /copyall /MIR /SEC /SECFIX /NP /TEE /R:4 /W:30 /MT:32 /LOG+:"C:\Logs\$server($CurrentDate).txt"
-
-        }
 
     }
